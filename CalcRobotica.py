@@ -7,6 +7,8 @@ Autor: Magh
 Creado: 2020.06.06
 """
 
+import math as m
+
 print("""
 *****Calculadora para el curso de Robótica Industrial*****
 Operaciones disponibles:
@@ -38,7 +40,44 @@ Ejemplos:
 """)
 
 #Lo más simple es ya tener la matriz resultante con toda la formula para cada elemento y simplemente reemplazar.
-#calcop=str(input("Escriba operación: "))
+calcop=str(input("Escriba operación: "))
+
+cartesiana=str(input("Ingrese coordenadas cartesianas: "))
+
+cart=cartesiana.split(" ")
+
+x = y = z = rc = re = tetaC = tetaE = fi = 0.0
+
+#elec=int(input("1-Cilindrica  2-Esféricas  Qué elije? "))
+
+x, y, z = float(cart[0]), float(cart[1]), float(cart[2])
+
+if len(cart)==3:
+    #Calculo coordenadas cilindricas:
+    rc=m.sqrt(m.pow(x,2)+m.pow(y,2))
+    tetaC=m.atan(y/x)
+    tetaC=(tetaC*180)/m.pi
+    
+    #Calculo coordenadas esféricas:
+    re=m.sqrt(m.pow(x,2)+m.pow(y,2)+m.pow(z,2))
+    tetaE=m.atan(y/x)
+    tetaE=(tetaE*180)/m.pi
+    fi=m.acos(z/re)
+    fi=(fi*180)/m.pi
+
+    print("""
+Coordenadas Cilindricas:
+r=%s
+teta=%s
+z=%s
+
+Coordenadas Esféricas:
+r=%s
+teta=%s
+fi=%s
+    """%(rc,tetaC,z,re,tetaE,fi))
+else:
+    print("Error, no ingreso tres coordenadas.")
 
 px,py,pz=0,1,2
 P=[[px],[py],[pz]]
