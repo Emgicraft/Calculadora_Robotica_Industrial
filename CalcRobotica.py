@@ -42,7 +42,7 @@ Ejemplos:
 #Lo más simple es ya tener la matriz resultante con toda la formula para cada elemento y simplemente reemplazar.
 calcop=str(input("Escriba operación: "))
 
-if calcop.startswith("Cart ",0,4) or calcop.startswith("cart ",0,4):
+if calcop.startswith("Cart",0,4) or calcop.startswith("cart",0,4):
     calcop=calcop.replace("Cart ","")
     calcop=calcop.replace("cart ","")
 
@@ -68,15 +68,15 @@ if calcop.startswith("Cart ",0,4) or calcop.startswith("cart ",0,4):
         fi=(fi*180)/m.pi
 
         print("""
-    Coordenadas Cilindricas:
-    r=%s
-    teta=%s
-    z=%s
+Coordenadas Cilindricas:
+r=%s
+teta=%s
+z=%s
 
-    Coordenadas Esféricas:
-    r=%s
-    teta=%s
-    fi=%s
+Coordenadas Esféricas:
+r=%s
+teta=%s
+fi=%s
         """%(rc,tetaC,z,re,tetaE,fi))
     else:
         print("Error, no ingreso tres coordenadas.")
