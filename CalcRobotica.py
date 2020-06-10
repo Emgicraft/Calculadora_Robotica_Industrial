@@ -218,6 +218,7 @@ elif calcop.startswith("T ",0,2) or calcop.startswith("t ",0,2):
     else:
         print("\nError, no ingresó vector relativo correctamente.")
     
+    #Vector resultante
     print("\nVector resultante:")
     for fila in range(3):
         V[fila][0]=V[fila][0]+P[fila][0]
@@ -297,7 +298,7 @@ elif calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
     
     #Vector relativo:
     calcop=str(input("\nVector relativo: "))
-    if calcop.startswith("V",0,1) or calcop.startswith("v",0,1):
+    if calcop.startswith("V ",0,2) or calcop.startswith("v ",0,2):
         calcop=calcop.replace("V ","")
         calcop=calcop.replace("v ","")
         Vtem=calcop.split(" ")
@@ -306,6 +307,7 @@ elif calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
     else:
         print("\nError, no ingresó vector relativo correctamente.")
     
+    #Vector resultante
     print("\nVector resultante:")
     for fila in range(3):
         Vres[fila][0]=V[0][0]*R[fila][0]+V[1][0]*R[fila][1]+V[2][0]*R[fila][2]
@@ -387,7 +389,7 @@ elif calcop.startswith("Rt ",0,3) or calcop.startswith("rt ",0,3) or calcop.star
     
     #Vector Traslación:
     calcop=str(input("\nVector Traslación: "))
-    if calcop.startswith("T",0,1) or calcop.startswith("t",0,1):
+    if calcop.startswith("T ",0,2) or calcop.startswith("t ",0,2):
         calcop=calcop.replace("T ","")
         calcop=calcop.replace("t ","")
         Ptem=calcop.split(" ")
@@ -396,7 +398,7 @@ elif calcop.startswith("Rt ",0,3) or calcop.startswith("rt ",0,3) or calcop.star
     
     #Vector relativo:
     calcop=str(input("\nVector relativo: "))
-    if calcop.startswith("V",0,1) or calcop.startswith("v",0,1):
+    if calcop.startswith("V ",0,2) or calcop.startswith("v ",0,2):
         calcop=calcop.replace("V ","")
         calcop=calcop.replace("v ","")
         Vtem=calcop.split(" ")
@@ -405,6 +407,7 @@ elif calcop.startswith("Rt ",0,3) or calcop.startswith("rt ",0,3) or calcop.star
     else:
         print("\nError, no ingresó vector relativo correctamente.")
     
+    #Vector resultante
     print("\nVector resultante:")
     for fila in range(3):
         Vres[fila][0]=V[0][0]*R[fila][0]+V[1][0]*R[fila][1]+V[2][0]*R[fila][2]+P[fila][0]
@@ -412,12 +415,100 @@ elif calcop.startswith("Rt ",0,3) or calcop.startswith("rt ",0,3) or calcop.star
 
 #Traslación seguida de Rotación
 elif calcop.startswith("Tr",0,2) or calcop.startswith("tr",0,2) or calcop.startswith("tR",0,2) or calcop.startswith("TR",0,2):
+    calcop=calcop.replace("Tr ","")
+    calcop=calcop.replace("tr ","")
+    calcop=calcop.replace("tR ","")
+    calcop=calcop.replace("TR ","")
+    Ptem=calcop.split(" ")
     for fila in range(3):
-        for columna in range(1):
-            print("Elemento P",fila+1,columna+1," = ",P[fila][columna])
-
+        P[fila][0]=float(Ptem[fila])
+    #Vector Rotación:
+    calcop=str(input("\nVector Rotación: "))
+    if calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
+        calcop=calcop.replace("R ","")
+        calcop=calcop.replace("r ","")
+        Rtem=calcop.split(" ")
+        for ele in range(len(Rtem)):
+            if Rtem[ele].startswith("X",0,1) or Rtem[ele].startswith("x",0,1):
+                Rtem[ele]=Rtem[ele].replace("X,","")
+                Rtem[ele]=Rtem[ele].replace("x,","")
+                #Converción entre sistemas ángulares
+                if Rtem[ele].endswith("g"):
+                    Rtem[ele]=(float(Rtem[ele])*m.pi)/200
+                elif Rtem[ele].endswith("rad"):
+                    pass
+                else:
+                    Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+                
+                #Esto es solo temporal y solo aplica para una sola rotación:
+                #Matriz de rotación del eje X
+                r11,r12,r13=1.0,0.0,0.0
+                r21=0.0
+                r31=0.0
+                r22,r23=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
+                r32,r33=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+                R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
+            elif Rtem[ele].startswith("Y",0,1) or Rtem[ele].startswith("y",0,1):
+                Rtem[ele]=Rtem[ele].replace("Y, ","")
+                Rtem[ele]=Rtem[ele].replace("y, ","")
+                #Converción entre sistemas ángulares
+                if Rtem[ele].endswith("g"):
+                    Rtem[ele]=(float(Rtem[ele])*m.pi)/200
+                elif Rtem[ele].endswith("rad"):
+                    pass
+                else:
+                    Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+                
+                #Esto es solo temporal y solo aplica para una sola rotación:
+                #Matriz de rotación del eje X
+                r12=0.0
+                r21,r22,r23=0.0,1.0,0.0
+                r32=0.0
+                r11,r13=m.cos(float(Rtem[0])),m.sin(float(Rtem[0]))
+                r31,r33=-m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+                R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
+            elif Rtem[ele].startswith("Z",0,1) or Rtem[ele].startswith("z",0,1):
+                Rtem[ele]=Rtem[ele].replace("Z, ","")
+                Rtem[ele]=Rtem[ele].replace("z, ","")
+                #Converción entre sistemas ángulares
+                if Rtem[ele].endswith("g"):
+                    Rtem[ele]=(float(Rtem[ele])*m.pi)/200
+                elif Rtem[ele].endswith("rad"):
+                    pass
+                else:
+                    Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+                
+                #Esto es solo temporal y solo aplica para una sola rotación:
+                #Matriz de rotación del eje X
+                r13=0.0
+                r23=0.0
+                r31=r32=r33=0.0,0.0,1.0
+                r11,r12=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
+                r21,r22=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+                R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
+            else:
+                print("Error! Mal definido el eje de rotación.")
+    
+    #Muestro la matriz de rotación resultante, es solo para probar:
+    print("\nMatriz de Rotación calculada:")
     for fila in range(3):
-        for columna in range(3):
-            print("Elemento R",fila+1,columna+1," = ",R[fila][columna])
+        print(R[fila][0]," ",R[fila][1]," ",R[fila][2])
+    
+    #Vector relativo:
+    calcop=str(input("\nVector relativo: "))
+    if calcop.startswith("V ",0,2) or calcop.startswith("v ",0,2):
+        calcop=calcop.replace("V ","")
+        calcop=calcop.replace("v ","")
+        Vtem=calcop.split(" ")
+        for fila in range(3):
+            V[fila][0]=float(Vtem[fila])
+    else:
+        print("\nError, no ingresó vector relativo correctamente.")
+    
+    #Vector resultante
+    print("\nVector resultante:")
+    for fila in range(3):
+        Vres[fila][0]=(V[0][0]+P[0][0])*R[fila][0]+(V[1][0]+P[1][0])*R[fila][1]+(V[2][0]+P[2][0])*R[fila][2]
+        print(Vres[fila][0])
 else:
     print("Error de entrada, no se reconoció el comando.")
