@@ -39,15 +39,23 @@ Ejemplos:
     R z,25 y,0.226rad x,70g
 """)
 
-#Lo más simple es ya tener la matriz resultante con toda la formula para cada elemento y simplemente reemplazar.
+#Declaración de variables:
+x = y = z = rc = re = tetaC = tetaE = fi = 0.0
+px,py,pz=0,1,2
+P=[[px],[py],[pz]]
+r11=r12=r13=0
+r21=r22=r23=1
+r31=r32=r33=2
+R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
+
+#Entrada
 calcop=str(input("Escriba operación: "))
 
-x = y = z = rc = re = tetaC = tetaE = fi = 0.0
-
+#*********Operación de conversión de coordenadas*********
+#Ingresan Cartesianas
 if calcop.startswith("Cart",0,4) or calcop.startswith("cart",0,4):
     calcop=calcop.replace("Cart ","")
     calcop=calcop.replace("cart ","")
-
     cart=calcop.split(" ")
 
     if len(cart)==3:
@@ -77,13 +85,13 @@ r=%s
 teta=%s
 fi=%s
         """%(rc,tetaC,z,re,tetaE,fi))
-        
     else:
-        print("Error, no ingreso tres coordenadas.")
+        print("Error, no ingresó tres coordenadas.")
+
+#Ingresan Cilindricas
 elif calcop.startswith("Cil",0,3) or calcop.startswith("cil",0,3):
     calcop=calcop.replace("Cil ","")
     calcop=calcop.replace("cil ","")
-
     cil=calcop.split(" ")
 
     if len(cil)==3:
@@ -121,11 +129,12 @@ teta=%s
 fi=%s
         """%(x,y,z,re,tetaE,fi))
     else:
-        print("Error, no ingreso tres coordenadas.")
+        print("Error, no ingresó tres coordenadas.")
+
+#Ingresan Esféricas
 elif calcop.startswith("Esfer",0,5) or calcop.startswith("esfer",0,5):
     calcop=calcop.replace("Esfer ","")
     calcop=calcop.replace("esfer ","")
-
     esfer=calcop.split(" ")
 
     if len(esfer)==3:
@@ -169,20 +178,44 @@ z=%s
         """%(x,y,z,rc,tetaC,z))
     else:
         print("Error, no ingreso tres coordenadas.")
+
+#*********Operación con matrices*********
+#Solo Traslación:
+elif calcop.startswith("T",0,1) or calcop.startswith("t",0,1):
+    calcop=calcop.replace("T ","")
+    calcop=calcop.replace("t ","")
+    Ptem=calcop.split(" ")
+
+    for fila in range(3):
+        P[fila][0]=float(Ptem[fila])
+    
+    for fila in range(3):
+        print("Elemento P",fila+1,1," = ",P[fila][0])
+
+#Solo Rotación:
+elif calcop.startswith("R",0,1) or calcop.startswith("r",0,1):
+    for fila in range(3):
+        for columna in range(3):
+            print("Elemento R",fila+1,columna+1," = ",R[fila][columna])
+
+#Rotación seguida de Traslación
+elif calcop.startswith("Rt",0,2) or calcop.startswith("rt",0,2) or calcop.startswith("rT",0,2) or calcop.startswith("RT",0,2):
+    for fila in range(3):
+        for columna in range(1):
+            print("Elemento P",fila+1,columna+1," = ",P[fila][columna])
+
+    for fila in range(3):
+        for columna in range(3):
+            print("Elemento R",fila+1,columna+1," = ",R[fila][columna])
+
+#Traslación seguida de Rotación
+elif calcop.startswith("Tr",0,2) or calcop.startswith("tr",0,2) or calcop.startswith("tR",0,2) or calcop.startswith("TR",0,2):
+    for fila in range(3):
+        for columna in range(1):
+            print("Elemento P",fila+1,columna+1," = ",P[fila][columna])
+
+    for fila in range(3):
+        for columna in range(3):
+            print("Elemento R",fila+1,columna+1," = ",R[fila][columna])
 else:
     print("Error de entrada, no se reconoció el comando.")
-
-px,py,pz=0,1,2
-P=[[px],[py],[pz]]
-r11=r12=r13=0
-r21=r22=r23=1
-r31=r32=r33=2
-R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-
-#for fila in range(3):
-#    for columna in range(1):
-#        print("Elemento P",fila+1,columna+1," = ",P[fila][columna])
-
-#for fila in range(3):
-#    for columna in range(3):
-#        print("Elemento R",fila+1,columna+1," = ",R[fila][columna])
