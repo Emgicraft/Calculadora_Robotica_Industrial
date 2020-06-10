@@ -17,23 +17,38 @@ Operaciones disponibles:
         Cart o cart -> Cartesianas a Cilíndricas y Esféricas
         Cil o cil -> Cilíndricas a Cartesianas y Esféricas
         Esfer o esfer -> Esféricas a Cartesianas y Cilíndricas
-    Sistemas tridimensionales:
+    Sistemas tridimensionales: (Al final ingresar vector relativo.)
         T o t -> Solo Traslación
         R o r -> Solo rotación
         Rt o rt o rT o RT -> Rotación seguida de Traslación
         Tr o tr o tR o TR -> Traslación seguida de Rotación
+        V o v -> Vector relativo al sistema auxiliar (OUVW)
 
 Ejemplos de uso:
     Cart 10.45 15.4 13
     Esfer 22.7 62g 0.97rad
-Para el caso de Sistemas tridimensionales, se pedirá ingresar el eje y ángulo de rotación, y luego el vector de traslación.
+
+Para el caso de Sistemas tridimensionales, se ingresará los valores del eje y ángulo de rotación,
+el vector de traslación y el vector relativo a ese sistema, si es que hay.
+De no haber vector relativo, solo ingresar ceros para cada elemento.
+El orden depende del tipo de operación a realizar.
+
 Algunos ejemplos:
+    ****Solo Rotación: R-V****
     R x,0.5236rad
-    r y,50g
+    v 0 0 0
+    ****Solo Traslación: T-V****
     T 3.17 14 -2
-    t 15 -11 -3
+    v -5 3.1 -1
+    ****Traslación seguida de Rotación: T-R-V****
+    tr 15 -11 -3    #Primero se ingresa el vector de traslación.
+    r y,50g         #Luego la matriz de rotación.
+    V -3 5.24 1     #Por último el vector relativo.
+    ****Siempre el vector relativo al final.****
+
 Para el caso de que sean varias rotaciones dejar un espacio en blanco por cada rotación.
 Teniendo en cuenta que la primera que se escriba será la primera rotación y no la segunda o última.
+
 Ejemplos:
     r y,100g x,60 z,0.785398rad
     R z,25 y,0.226rad x,70g
@@ -47,6 +62,8 @@ r11=r12=r13=0
 r21=r22=r23=1
 r31=r32=r33=2
 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
+vx,vy,vz=0,0,0
+V=[[vx],[vy],[vz]]
 
 #Entrada
 calcop=str(input("Escriba operación: "))
@@ -185,12 +202,24 @@ elif calcop.startswith("T",0,1) or calcop.startswith("t",0,1):
     calcop=calcop.replace("T ","")
     calcop=calcop.replace("t ","")
     Ptem=calcop.split(" ")
-
     for fila in range(3):
         P[fila][0]=float(Ptem[fila])
     
+    #Vector relativo:
+    calcop=str(input("Vector relativo: "))
+    if calcop.startswith("V",0,1) or calcop.startswith("v",0,1):
+        calcop=calcop.replace("V ","")
+        calcop=calcop.replace("v ","")
+        Vtem=calcop.split(" ")
+        for fila in range(3):
+            V[fila][0]=float(Vtem[fila])
+    else:
+        print("\nError, no ingresó vector relativo correctamente.")
+    
+    print("\nVector resultante:")
     for fila in range(3):
-        print("Elemento P",fila+1,1," = ",P[fila][0])
+        V[fila][0]=V[fila][0]+P[fila][0]
+        print(V[fila][0])
 
 #Solo Rotación:
 elif calcop.startswith("R",0,1) or calcop.startswith("r",0,1):
