@@ -50,9 +50,10 @@ if calcop.startswith("Cart",0,4) or calcop.startswith("cart",0,4):
 
     cart=calcop.split(" ")
 
-    x, y, z = float(cart[0]), float(cart[1]), float(cart[2])
-
     if len(cart)==3:
+        #Asignación de cada elemento a su respectiva variable:
+        x, y, z = float(cart[0]), float(cart[1]), float(cart[2])
+
         #Calculo coordenadas cilindricas:
         rc=m.sqrt(m.pow(x,2)+m.pow(y,2))
         tetaC=m.atan(y/x)
@@ -85,14 +86,23 @@ elif calcop.startswith("Cil",0,3) or calcop.startswith("cil",0,3):
 
     cil=calcop.split(" ")
 
-    rc, tetaC, z = float(cil[0]), float(cil[1]), float(cil[2])
-
     if len(cil)==3:
-        #Calculo coordenadas cartesianas:
+        #Convierción entre sistemas ángulares
+        if cil[1].endswith("g"):
+            cil[1]=(float(cil[1])*m.pi)/200
+        elif cil[1].endswith("rad"):
+            pass
+        else:
+            cil[1]=(float(cil[1])*m.pi)/180
+
+        #Asignación de cada elemento a su respectiva variable:
+        rc, tetaC, z = float(cil[0]), float(cil[1]), float(cil[2])
+
+        #Calcula coordenadas cartesianas:
         x=rc*m.cos(tetaC)
         y=rc*m.sin(tetaC)
         
-        #Calculo coordenadas esféricas:
+        #CalculA coordenadas esféricas:
         re=m.sqrt(m.pow(x,2)+m.pow(y,2)+m.pow(z,2))
         tetaE=m.atan(y/x)
         tetaE=(tetaE*180)/m.pi
@@ -118,13 +128,28 @@ elif calcop.startswith("Esfer",0,5) or calcop.startswith("esfer",0,5):
 
     esfer=calcop.split(" ")
 
-    re, tetaE, fi = float(esfer[0]), float(esfer[1]), float(esfer[2])
-
     if len(esfer)==3:
+        #Convierción entre sistemas ángulares
+        if esfer[1].endswith("g"):
+            esfer[1]=(float(esfer[1])*m.pi)/200
+        elif esfer[1].endswith("rad"):
+            pass
+        else:
+            esfer[1]=(float(esfer[1])*m.pi)/180
+        if esfer[2].endswith("g"):
+            esfer[2]=(float(esfer[2])*m.pi)/200
+        elif esfer[2].endswith("rad"):
+            pass
+        else:
+            esfer[2]=(float(esfer[2])*m.pi)/180
+
+        #Asignación de cada elemento a su respectiva variable:
+        re, tetaE, fi = float(esfer[0]), float(esfer[1]), float(esfer[2])
+
         #Calculo coordenadas cartesianas:
         x=re*m.sin(fi)*m.cos(tetaE)
-        y=rc*m.sin(fi)*m*m.sin(tetaE)
-        z=rc*m.cos(fi)
+        y=re*m.sin(fi)*m.sin(tetaE)
+        z=re*m.cos(fi)
         
         #Calculo coordenadas cilindricas:
         rc=m.sqrt(m.pow(x,2)+m.pow(y,2))
@@ -154,10 +179,10 @@ r21=r22=r23=1
 r31=r32=r33=2
 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
 
-for fila in range(3):
-    for columna in range(1):
-        print("Elemento P",fila+1,columna+1," = ",P[fila][columna])
+#for fila in range(3):
+#    for columna in range(1):
+#        print("Elemento P",fila+1,columna+1," = ",P[fila][columna])
 
-for fila in range(3):
-    for columna in range(3):
-        print("Elemento R",fila+1,columna+1," = ",R[fila][columna])
+#for fila in range(3):
+#    for columna in range(3):
+#        print("Elemento R",fila+1,columna+1," = ",R[fila][columna])
