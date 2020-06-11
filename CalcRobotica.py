@@ -67,11 +67,11 @@ V=[[vx],[vy],[vz]]
 Vres=[[0.0],[0.0],[0.0]]
 
 #Entrada
-calcop=str(input("Escriba operación: "))
+calcop=str(input("\nEscriba operación: "))
 
 #*********Operación de conversión de coordenadas*********
 #Ingresan Cartesianas
-if calcop.startswith("Cart",0,4) or calcop.startswith("cart",0,4):
+if calcop.startswith("Cart ",0,5) or calcop.startswith("cart ",0,5):
     calcop=calcop.replace("Cart ","")
     calcop=calcop.replace("cart ","")
     cart=calcop.split(" ")
@@ -104,10 +104,10 @@ teta=%s
 fi=%s
         """%(rc,tetaC,z,re,tetaE,fi))
     else:
-        print("Error, no ingresó tres coordenadas.")
+        print("\nError, no ingresó tres coordenadas.")
 
 #Ingresan Cilindricas
-elif calcop.startswith("Cil",0,3) or calcop.startswith("cil",0,3):
+elif calcop.startswith("Cil ",0,4) or calcop.startswith("cil ",0,4):
     calcop=calcop.replace("Cil ","")
     calcop=calcop.replace("cil ","")
     cil=calcop.split(" ")
@@ -147,10 +147,10 @@ teta=%s
 fi=%s
         """%(x,y,z,re,tetaE,fi))
     else:
-        print("Error, no ingresó tres coordenadas.")
+        print("\nError, no ingresó tres coordenadas.")
 
 #Ingresan Esféricas
-elif calcop.startswith("Esfer",0,5) or calcop.startswith("esfer",0,5):
+elif calcop.startswith("Esfer ",0,6) or calcop.startswith("esfer ",0,6):
     calcop=calcop.replace("Esfer ","")
     calcop=calcop.replace("esfer ","")
     esfer=calcop.split(" ")
@@ -209,7 +209,7 @@ elif calcop.startswith("T ",0,2) or calcop.startswith("t ",0,2):
     
     #Vector relativo:
     calcop=str(input("\nVector relativo: "))
-    if calcop.startswith("V",0,1) or calcop.startswith("v",0,1):
+    if calcop.startswith("V ",0,2) or calcop.startswith("v ",0,2):
         calcop=calcop.replace("V ","")
         calcop=calcop.replace("v ","")
         Vtem=calcop.split(" ")
@@ -231,7 +231,7 @@ elif calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
     calcop=calcop.replace("r ","")
     Rtem=calcop.split(" ")
     for ele in range(len(Rtem)):
-        if Rtem[ele].startswith("X",0,1) or Rtem[ele].startswith("x",0,1):
+        if Rtem[ele].startswith("X,",0,2) or Rtem[ele].startswith("x,",0,2):
             Rtem[ele]=Rtem[ele].replace("X,","")
             Rtem[ele]=Rtem[ele].replace("x,","")
             #Converción entre sistemas ángulares
@@ -250,7 +250,7 @@ elif calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
             r22,r23=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
             r32,r33=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-        elif Rtem[ele].startswith("Y",0,1) or Rtem[ele].startswith("y",0,1):
+        elif Rtem[ele].startswith("Y,",0,2) or Rtem[ele].startswith("y,",0,2):
             Rtem[ele]=Rtem[ele].replace("Y,","")
             Rtem[ele]=Rtem[ele].replace("y,","")
             #Converción entre sistemas ángulares
@@ -269,7 +269,7 @@ elif calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
             r11,r13=m.cos(float(Rtem[0])),m.sin(float(Rtem[0]))
             r31,r33=-m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-        elif Rtem[ele].startswith("Z",0,1) or Rtem[ele].startswith("z",0,1):
+        elif Rtem[ele].startswith("Z,",0,2) or Rtem[ele].startswith("z,",0,2):
             Rtem[ele]=Rtem[ele].replace("Z,","")
             Rtem[ele]=Rtem[ele].replace("z,","")
             #Converción entre sistemas ángulares
@@ -289,7 +289,7 @@ elif calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
             r21,r22=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
         else:
-            print("Error! Mal definido el eje de rotación.")
+            print("\nError! Mal definido el eje de rotación.")
     
     #Muestro la matriz de rotación resultante, es solo para probar:
     print("\nMatriz de Rotación calculada:")
@@ -322,7 +322,7 @@ elif calcop.startswith("Rt ",0,3) or calcop.startswith("rt ",0,3) or calcop.star
     calcop=calcop.replace("RT ","")
     Rtem=calcop.split(" ")
     for ele in range(len(Rtem)):
-        if Rtem[ele].startswith("X",0,1) or Rtem[ele].startswith("x",0,1):
+        if Rtem[ele].startswith("X,",0,2) or Rtem[ele].startswith("x,",0,2):
             Rtem[ele]=Rtem[ele].replace("X,","")
             Rtem[ele]=Rtem[ele].replace("x,","")
             #Converción entre sistemas ángulares
@@ -341,7 +341,7 @@ elif calcop.startswith("Rt ",0,3) or calcop.startswith("rt ",0,3) or calcop.star
             r22,r23=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
             r32,r33=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-        elif Rtem[ele].startswith("Y",0,1) or Rtem[ele].startswith("y",0,1):
+        elif Rtem[ele].startswith("Y,",0,2) or Rtem[ele].startswith("y,",0,2):
             Rtem[ele]=Rtem[ele].replace("Y, ","")
             Rtem[ele]=Rtem[ele].replace("y, ","")
             #Converción entre sistemas ángulares
@@ -360,7 +360,7 @@ elif calcop.startswith("Rt ",0,3) or calcop.startswith("rt ",0,3) or calcop.star
             r11,r13=m.cos(float(Rtem[0])),m.sin(float(Rtem[0]))
             r31,r33=-m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-        elif Rtem[ele].startswith("Z",0,1) or Rtem[ele].startswith("z",0,1):
+        elif Rtem[ele].startswith("Z,",0,2) or Rtem[ele].startswith("z,",0,2):
             Rtem[ele]=Rtem[ele].replace("Z, ","")
             Rtem[ele]=Rtem[ele].replace("z, ","")
             #Converción entre sistemas ángulares
@@ -380,7 +380,7 @@ elif calcop.startswith("Rt ",0,3) or calcop.startswith("rt ",0,3) or calcop.star
             r21,r22=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
         else:
-            print("Error! Mal definido el eje de rotación.")
+            print("\nError! Mal definido el eje de rotación.")
     
     #Muestro la matriz de rotación resultante, es solo para probar:
     print("\nMatriz de Rotación calculada:")
@@ -414,7 +414,7 @@ elif calcop.startswith("Rt ",0,3) or calcop.startswith("rt ",0,3) or calcop.star
         print(Vres[fila][0])
 
 #Traslación seguida de Rotación
-elif calcop.startswith("Tr",0,2) or calcop.startswith("tr",0,2) or calcop.startswith("tR",0,2) or calcop.startswith("TR",0,2):
+elif calcop.startswith("Tr ",0,3) or calcop.startswith("tr ",0,3) or calcop.startswith("tR ",0,3) or calcop.startswith("TR ",0,3):
     calcop=calcop.replace("Tr ","")
     calcop=calcop.replace("tr ","")
     calcop=calcop.replace("tR ","")
@@ -429,7 +429,7 @@ elif calcop.startswith("Tr",0,2) or calcop.startswith("tr",0,2) or calcop.starts
         calcop=calcop.replace("r ","")
         Rtem=calcop.split(" ")
         for ele in range(len(Rtem)):
-            if Rtem[ele].startswith("X",0,1) or Rtem[ele].startswith("x",0,1):
+            if Rtem[ele].startswith("X,",0,2) or Rtem[ele].startswith("x,",0,2):
                 Rtem[ele]=Rtem[ele].replace("X,","")
                 Rtem[ele]=Rtem[ele].replace("x,","")
                 #Converción entre sistemas ángulares
@@ -448,7 +448,7 @@ elif calcop.startswith("Tr",0,2) or calcop.startswith("tr",0,2) or calcop.starts
                 r22,r23=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
                 r32,r33=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
                 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-            elif Rtem[ele].startswith("Y",0,1) or Rtem[ele].startswith("y",0,1):
+            elif Rtem[ele].startswith("Y,",0,2) or Rtem[ele].startswith("y,",0,2):
                 Rtem[ele]=Rtem[ele].replace("Y, ","")
                 Rtem[ele]=Rtem[ele].replace("y, ","")
                 #Converción entre sistemas ángulares
@@ -467,7 +467,7 @@ elif calcop.startswith("Tr",0,2) or calcop.startswith("tr",0,2) or calcop.starts
                 r11,r13=m.cos(float(Rtem[0])),m.sin(float(Rtem[0]))
                 r31,r33=-m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
                 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-            elif Rtem[ele].startswith("Z",0,1) or Rtem[ele].startswith("z",0,1):
+            elif Rtem[ele].startswith("Z,",0,2) or Rtem[ele].startswith("z,",0,2):
                 Rtem[ele]=Rtem[ele].replace("Z, ","")
                 Rtem[ele]=Rtem[ele].replace("z, ","")
                 #Converción entre sistemas ángulares
@@ -487,7 +487,7 @@ elif calcop.startswith("Tr",0,2) or calcop.startswith("tr",0,2) or calcop.starts
                 r21,r22=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
                 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
             else:
-                print("Error! Mal definido el eje de rotación.")
+                print("\nError! Mal definido el eje de rotación.")
     
     #Muestro la matriz de rotación resultante, es solo para probar:
     print("\nMatriz de Rotación calculada:")
@@ -511,4 +511,4 @@ elif calcop.startswith("Tr",0,2) or calcop.startswith("tr",0,2) or calcop.starts
         Vres[fila][0]=(V[0][0]+P[0][0])*R[fila][0]+(V[1][0]+P[1][0])*R[fila][1]+(V[2][0]+P[2][0])*R[fila][2]
         print(Vres[fila][0])
 else:
-    print("Error de entrada, no se reconoció el comando.")
+    print("\Error de entrada, no se reconoció el comando.")
