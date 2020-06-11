@@ -251,8 +251,8 @@ elif calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
             r32,r33=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
         elif Rtem[ele].startswith("Y",0,1) or Rtem[ele].startswith("y",0,1):
-            Rtem[ele]=Rtem[ele].replace("Y, ","")
-            Rtem[ele]=Rtem[ele].replace("y, ","")
+            Rtem[ele]=Rtem[ele].replace("Y,","")
+            Rtem[ele]=Rtem[ele].replace("y,","")
             #Converción entre sistemas ángulares
             if Rtem[ele].endswith("g"):
                 Rtem[ele]=(float(Rtem[ele])*m.pi)/200
@@ -270,8 +270,8 @@ elif calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
             r31,r33=-m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
         elif Rtem[ele].startswith("Z",0,1) or Rtem[ele].startswith("z",0,1):
-            Rtem[ele]=Rtem[ele].replace("Z, ","")
-            Rtem[ele]=Rtem[ele].replace("z, ","")
+            Rtem[ele]=Rtem[ele].replace("Z,","")
+            Rtem[ele]=Rtem[ele].replace("z,","")
             #Converción entre sistemas ángulares
             if Rtem[ele].endswith("g"):
                 Rtem[ele]=(float(Rtem[ele])*m.pi)/200
