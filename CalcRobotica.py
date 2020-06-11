@@ -9,6 +9,88 @@ Creado: 2020.06.06
 
 import math as m
 
+#Converción entre sistemas ángulares:
+def angularSisConvert(cadena): #Devuelve ángulo en tipo float
+    if cadena.endswith("g"):
+        cadena=cadena.replace("g","")
+        return (float(cadena)*m.pi)/200
+    elif cadena.endswith("rad"):
+        cadena=cadena.replace("rad","")
+        return cadena
+    else:
+        return (float(cadena)*m.pi)/180
+
+#Convierte coordenadas cartesianas en cilindricas:
+def cartToCil(x,y,z):
+    r=m.sqrt(m.pow(x,2)+m.pow(y,2))
+    theta=m.atan(y/x)
+    theta=(theta*180)/m.pi
+    print("""
+Coordenadas Cilindricas:
+r=%s
+theta=%s
+z=%s"""%(r,theta,z))
+
+#Convierte coordenadas cartesianas en esféricas:
+def cartToEsfer(x,y,z):
+    r=m.sqrt(m.pow(x,2)+m.pow(y,2)+m.pow(z,2))
+    theta=m.atan(y/x)
+    theta=(theta*180)/m.pi
+    phi=m.acos(z/r)
+    phi=(phi*180)/m.pi
+    print("""
+Coordenadas Esféricas:
+r=%s
+theta=%s
+phi=%s"""%(r,theta,phi))
+
+#Convierte coordenadas cilindricas en cartesianas:
+def cilToCart(modVector,theta,z):
+    theta=(theta*m.pi)/180
+    x=modVector*m.cos(theta)
+    y=modVector*m.sin(theta)
+    print("""
+Coordenadas Cartesianas:
+x=%s
+y=%s
+z=%s"""%(x,y,z))
+
+#Convierte coordenadas cilindricas en esféricas:
+def cilToEsfer(modVector,theta,z):
+    r=m.sqrt(m.pow(modVector,2)+m.pow(z,2))
+    phi=m.atan(z/r)
+    phi=(phi*180)/m.pi
+    print("""
+Coordenadas Esféricas:
+r=%s
+theta=%s
+phi=%s"""%(r,theta,phi))
+
+#Convierte coordenadas esféricas en cartesianas:
+def esferToCart(modVector,theta,phi):
+    theta=(theta*m.pi)/180
+    phi=(phi*m.pi)/180
+    x=modVector*m.sin(phi)*m.cos(theta)
+    y=modVector*m.sin(phi)*m.sin(theta)
+    z=modVector*m.cos(phi)
+    print("""
+Coordenadas Cartesianas:
+x=%s
+y=%s
+z=%s"""%(x,y,z))
+
+#Convierte coordenadas esféricas en cilindricas:
+def esferToCil(modVector,theta,phi):
+    phi=(phi*m.pi)/180
+    r=modVector*m.sin(phi)
+    z=modVector*m.cos(phi)
+    print("""
+Coordenadas Esféricas:
+r=%s
+theta=%s
+phi=%s"""%(r,theta,z))
+
+#Info del programa:
 print("""
 *****Calculadora para el curso de Robótica Industrial*****
 Operaciones disponibles:
@@ -114,12 +196,7 @@ elif calcop.startswith("Cil ",0,4) or calcop.startswith("cil ",0,4):
 
     if len(cil)==3:
         #Converción entre sistemas ángulares
-        if cil[1].endswith("g"):
-            cil[1]=(float(cil[1])*m.pi)/200
-        elif cil[1].endswith("rad"):
-            pass
-        else:
-            cil[1]=(float(cil[1])*m.pi)/180
+        cil[1]=angularSisConvert(cil[1])
 
         #Asignación de cada elemento a su respectiva variable:
         rc, tetaC, z = float(cil[0]), float(cil[1]), float(cil[2])
@@ -128,7 +205,7 @@ elif calcop.startswith("Cil ",0,4) or calcop.startswith("cil ",0,4):
         x=rc*m.cos(tetaC)
         y=rc*m.sin(tetaC)
         
-        #CalculA coordenadas esféricas:
+        #Calcula coordenadas esféricas:
         re=m.sqrt(m.pow(x,2)+m.pow(y,2)+m.pow(z,2))
         tetaE=m.atan(y/x)
         tetaE=(tetaE*180)/m.pi
@@ -157,18 +234,8 @@ elif calcop.startswith("Esfer ",0,6) or calcop.startswith("esfer ",0,6):
 
     if len(esfer)==3:
         #Converción entre sistemas ángulares
-        if esfer[1].endswith("g"):
-            esfer[1]=(float(esfer[1])*m.pi)/200
-        elif esfer[1].endswith("rad"):
-            pass
-        else:
-            esfer[1]=(float(esfer[1])*m.pi)/180
-        if esfer[2].endswith("g"):
-            esfer[2]=(float(esfer[2])*m.pi)/200
-        elif esfer[2].endswith("rad"):
-            pass
-        else:
-            esfer[2]=(float(esfer[2])*m.pi)/180
+        esfer[1]=angularSisConvert(esfer[1])
+        esfer[2]=angularSisConvert(esfer[2])
 
         #Asignación de cada elemento a su respectiva variable:
         re, tetaE, fi = float(esfer[0]), float(esfer[1]), float(esfer[2])
