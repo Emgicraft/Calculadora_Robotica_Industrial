@@ -9,20 +9,41 @@ Creado: 2020.06.06
 
 import math as m
 
-#Converción entre sistemas ángulares:
-def angularSisConvert(cadena): #Devuelve ángulo en tipo float
+#***Angular Sistem Convert***
+#Sexagesimales:
+def ascSex(cadena): #Devuelve ángulo en tipo float
+    if cadena.endswith("g"):
+        cadena=cadena.replace("g","")
+        return (float(cadena)*9)/10 #180/200
+    elif cadena.endswith("rad"):
+        cadena=cadena.replace("rad","")
+        return (float(cadena)*180)/m.pi
+    else:
+        return float(cadena)
+#Centesimales:
+def ascCen(cadena): #Devuelve ángulo en tipo float
+    if cadena.endswith("g"):
+        cadena=cadena.replace("g","")
+        return float(cadena)
+    elif cadena.endswith("rad"):
+        cadena=cadena.replace("rad","")
+        return (float(cadena)*200)/m.pi
+    else:
+        return (float(cadena)*200)/180
+#Radianes:
+def ascRad(cadena): #Devuelve ángulo en tipo float
     if cadena.endswith("g"):
         cadena=cadena.replace("g","")
         return (float(cadena)*m.pi)/200
     elif cadena.endswith("rad"):
         cadena=cadena.replace("rad","")
-        return cadena
+        return float(cadena)
     else:
         return (float(cadena)*m.pi)/180
 
-#Convierte coordenadas cartesianas en cilindricas:
+#Convierte coordenadas cartesianas a cilindricas:
 def cartToCil(x,y,z):
-    r=m.sqrt(m.pow(x,2)+m.pow(y,2))
+    r=m.hypot(x,y) #Retorna raiz(x^2+y^2)
     theta=m.atan(y/x)
     theta=(theta*180)/m.pi
     print("""
@@ -30,23 +51,20 @@ Coordenadas Cilindricas:
 r=%s
 theta=%s
 z=%s"""%(r,theta,z))
-
-#Convierte coordenadas cartesianas en esféricas:
+#Convierte coordenadas cartesianas a esféricas:
 def cartToEsfer(x,y,z):
-    r=m.sqrt(m.pow(x,2)+m.pow(y,2)+m.pow(z,2))
-    theta=m.atan(y/x)
-    theta=(theta*180)/m.pi
-    phi=m.acos(z/r)
-    phi=(phi*180)/m.pi
+    r=m.hypot(x,y,z) #Retorna raiz(x^2+y^2+z^2)
+    theta=(m.atan(y/x)*180)/m.pi
+    phi=(m.acos(z/r)*180)/m.pi
     print("""
 Coordenadas Esféricas:
 r=%s
 theta=%s
 phi=%s"""%(r,theta,phi))
 
-#Convierte coordenadas cilindricas en cartesianas:
+#Convierte coordenadas cilindricas a cartesianas:
 def cilToCart(modVector,theta,z):
-    theta=(theta*m.pi)/180
+    theta=ascRad(theta)
     x=modVector*m.cos(theta)
     y=modVector*m.sin(theta)
     print("""
@@ -54,22 +72,21 @@ Coordenadas Cartesianas:
 x=%s
 y=%s
 z=%s"""%(x,y,z))
-
-#Convierte coordenadas cilindricas en esféricas:
+#Convierte coordenadas cilindricas a esféricas:
 def cilToEsfer(modVector,theta,z):
-    r=m.sqrt(m.pow(modVector,2)+m.pow(z,2))
-    phi=m.atan(z/r)
-    phi=(phi*180)/m.pi
+    r=m.hypot(modVector,z) #Retorna raiz(modVector^2+y^2)
+    theta=ascSex(theta)
+    phi=(m.acos(z/r)*180)/m.pi
     print("""
 Coordenadas Esféricas:
 r=%s
 theta=%s
 phi=%s"""%(r,theta,phi))
 
-#Convierte coordenadas esféricas en cartesianas:
+#Convierte coordenadas esféricas a cartesianas:
 def esferToCart(modVector,theta,phi):
-    theta=(theta*m.pi)/180
-    phi=(phi*m.pi)/180
+    theta=ascRad(theta)
+    phi=ascRad(phi)
     x=modVector*m.sin(phi)*m.cos(theta)
     y=modVector*m.sin(phi)*m.sin(theta)
     z=modVector*m.cos(phi)
@@ -78,19 +95,19 @@ Coordenadas Cartesianas:
 x=%s
 y=%s
 z=%s"""%(x,y,z))
-
-#Convierte coordenadas esféricas en cilindricas:
+#Convierte coordenadas esféricas a cilindricas:
 def esferToCil(modVector,theta,phi):
-    phi=(phi*m.pi)/180
+    theta=ascSex(theta)
+    phi=ascRad(phi)
     r=modVector*m.sin(phi)
     z=modVector*m.cos(phi)
     print("""
-Coordenadas Esféricas:
+Coordenadas Cilindricas:
 r=%s
 theta=%s
-phi=%s"""%(r,theta,z))
+z=%s"""%(r,theta,z))
 
-#Info del programa:
+#Info de las funciones del programa:
 print("""
 *****Calculadora para el curso de Robótica Industrial*****
 Operaciones disponibles:
@@ -101,51 +118,55 @@ Operaciones disponibles:
         Esfer o esfer -> Esféricas a Cartesianas y Cilíndricas
     Sistemas tridimensionales: (Al final ingresar vector relativo.)
         T o t -> Solo Traslación
-        R o r -> Solo rotación
+        R o r -> Solo Rotación
         Rt o rt o rT o RT -> Rotación seguida de Traslación
         Tr o tr o tR o TR -> Traslación seguida de Rotación
         V o v -> Vector relativo al sistema auxiliar (OUVW)
 
 Ejemplos de uso:
     Cart 10.45 15.4 13
-    Esfer 22.7 62g 0.97rad
+    esfer 22.7 62g 0.97rad
 
 Para el caso de Sistemas tridimensionales, se ingresará los valores del eje y ángulo de rotación,
 el vector de traslación y el vector relativo a ese sistema, si es que hay.
 De no haber vector relativo, solo ingresar ceros para cada elemento.
-El orden depende del tipo de operación a realizar.
+
+**Importante: El orden en que se ingresan los datos depende del tipo de operación a realizar.**
 
 Algunos ejemplos:
     ****Solo Rotación: R-V****
     R x,0.5236rad
-    v 0 0 0
+    v 2 4 5
     ****Solo Traslación: T-V****
     T 3.17 14 -2
     v -5 3.1 -1
     ****Traslación seguida de Rotación: T-R-V****
     tr 15 -11 -3    #Primero se ingresa el vector de traslación.
     r y,50g         #Luego la matriz de rotación.
-    V -3 5.24 1     #Por último el vector relativo.
+    V 0 0 0         #Por último el vector relativo, que para este ejemplo no hay.
     ****Siempre el vector relativo al final.****
 
 Para el caso de que sean varias rotaciones dejar un espacio en blanco por cada rotación.
 Teniendo en cuenta que la primera que se escriba será la primera rotación y no la segunda o última.
 
 Ejemplos:
-    rt y,100g x,60 z,0.785398rad    #Obviamente después de esto se ingresaría el vector de traslación.
+    ****Rotación seguida de Traslación: R-T-V****
+    rt y,100g x,60 z,0.785398rad
+    T 3.17 14 -2
+    v -5 3.1 -1
+    ****Solo Rotación: R-V****
     R z,25 y,0.226rad x,70g
-""")
+    v 2 4 5""")
 
 #Declaración de variables:
-x = y = z = rc = re = tetaC = tetaE = fi = 0.0
-px,py,pz=0.0,1.0,2.0    #Por ahora no los uso independientemente.
-P=[[px],[py],[pz]]
+#px,py,pz=0.0,1.0,2.0    #Por ahora no los uso independientemente.
+P=[[0.0],[0.0],[0.0]]
 r11=r12=r13=0.0
 r21=r22=r23=1.0
 r31=r32=r33=2.0
 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-vx,vy,vz=0.0,0.0,0.0
-V=[[vx],[vy],[vz]]
+#vx,vy,vz=0.0,0.0,0.0
+V=[[0.0],[0.0],[0.0]]
 Vres=[[0.0],[0.0],[0.0]]
 
 #Entrada
@@ -159,34 +180,13 @@ if calcop.startswith("Cart ",0,5) or calcop.startswith("cart ",0,5):
     cart=calcop.split(" ")
 
     if len(cart)==3:
-        #Asignación de cada elemento a su respectiva variable:
-        x, y, z = float(cart[0]), float(cart[1]), float(cart[2])
-
-        #Calculo coordenadas cilindricas:
-        rc=m.sqrt(m.pow(x,2)+m.pow(y,2))
-        tetaC=m.atan(y/x)
-        tetaC=(tetaC*180)/m.pi
+        #Calcula e imprime coordenadas cilindricas:
+        cartToCil(float(cart[0]), float(cart[1]), float(cart[2]))
         
-        #Calculo coordenadas esféricas:
-        re=m.sqrt(m.pow(x,2)+m.pow(y,2)+m.pow(z,2))
-        tetaE=m.atan(y/x)
-        tetaE=(tetaE*180)/m.pi
-        fi=m.acos(z/re)
-        fi=(fi*180)/m.pi
-
-        print("""
-Coordenadas Cilindricas:
-r=%s
-teta=%s
-z=%s
-
-Coordenadas Esféricas:
-r=%s
-teta=%s
-fi=%s
-        """%(rc,tetaC,z,re,tetaE,fi))
+        #Calcula e imprime coordenadas esféricas:
+        cartToEsfer(float(cart[0]), float(cart[1]), float(cart[2]))
     else:
-        print("\nError, no ingresó tres coordenadas.")
+        print("\nError! No ingresó tres coordenadas.")
 
 #Ingresan Cilindricas
 elif calcop.startswith("Cil ",0,4) or calcop.startswith("cil ",0,4):
@@ -195,36 +195,13 @@ elif calcop.startswith("Cil ",0,4) or calcop.startswith("cil ",0,4):
     cil=calcop.split(" ")
 
     if len(cil)==3:
-        #Converción entre sistemas ángulares
-        cil[1]=angularSisConvert(cil[1])
-
-        #Asignación de cada elemento a su respectiva variable:
-        rc, tetaC, z = float(cil[0]), float(cil[1]), float(cil[2])
-
         #Calcula coordenadas cartesianas:
-        x=rc*m.cos(tetaC)
-        y=rc*m.sin(tetaC)
+        cilToCart(float(cil[0]), cil[1], float(cil[2]))
         
         #Calcula coordenadas esféricas:
-        re=m.sqrt(m.pow(x,2)+m.pow(y,2)+m.pow(z,2))
-        tetaE=m.atan(y/x)
-        tetaE=(tetaE*180)/m.pi
-        fi=m.acos(z/re)
-        fi=(fi*180)/m.pi
-
-        print("""
-Coordenadas Cartesianas:
-x=%s
-y=%s
-z=%s
-
-Coordenadas Esféricas:
-r=%s
-teta=%s
-fi=%s
-        """%(x,y,z,re,tetaE,fi))
+        cilToEsfer(float(cil[0]), cil[1], float(cil[2]))
     else:
-        print("\nError, no ingresó tres coordenadas.")
+        print("\nError! No ingresó tres coordenadas.")
 
 #Ingresan Esféricas
 elif calcop.startswith("Esfer ",0,6) or calcop.startswith("esfer ",0,6):
@@ -233,36 +210,13 @@ elif calcop.startswith("Esfer ",0,6) or calcop.startswith("esfer ",0,6):
     esfer=calcop.split(" ")
 
     if len(esfer)==3:
-        #Converción entre sistemas ángulares
-        esfer[1]=angularSisConvert(esfer[1])
-        esfer[2]=angularSisConvert(esfer[2])
-
-        #Asignación de cada elemento a su respectiva variable:
-        re, tetaE, fi = float(esfer[0]), float(esfer[1]), float(esfer[2])
-
         #Calculo coordenadas cartesianas:
-        x=re*m.sin(fi)*m.cos(tetaE)
-        y=re*m.sin(fi)*m.sin(tetaE)
-        z=re*m.cos(fi)
+        esferToCart(float(esfer[0]), esfer[1], esfer[2])
         
         #Calculo coordenadas cilindricas:
-        rc=m.sqrt(m.pow(x,2)+m.pow(y,2))
-        tetaC=m.atan(y/x)
-        tetaC=(tetaC*180)/m.pi
-
-        print("""
-Coordenadas Cartesianas:
-x=%s
-y=%s
-z=%s
-
-Coordenadas Cilindricas:
-r=%s
-teta=%s
-z=%s
-        """%(x,y,z,rc,tetaC,z))
+        esferToCil(float(esfer[0]), esfer[1], esfer[2])
     else:
-        print("Error, no ingreso tres coordenadas.")
+        print("\nError! No ingresó tres coordenadas.")
 
 #*********Operación con matrices*********
 #Solo Traslación:
@@ -283,77 +237,62 @@ elif calcop.startswith("T ",0,2) or calcop.startswith("t ",0,2):
         for fila in range(3):
             V[fila][0]=float(Vtem[fila])
     else:
-        print("\nError, no ingresó vector relativo correctamente.")
+        print("\nError! No ingresó vector relativo correctamente.")
     
     #Vector resultante
     print("\nVector resultante:")
     for fila in range(3):
-        V[fila][0]=V[fila][0]+P[fila][0]
-        print(V[fila][0])
+        Vres[fila][0]=V[fila][0]+P[fila][0]
+        print(Vres[fila][0])
 
 #Solo Rotación: \\Por terminar, probablemente requiera de funciones que operen matrices.//
 elif calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
     #Vector Rotación:
     calcop=calcop.replace("R ","")
     calcop=calcop.replace("r ","")
-    Rtem=calcop.split(" ")
-    for ele in range(len(Rtem)):
-        if Rtem[ele].startswith("X,",0,2) or Rtem[ele].startswith("x,",0,2):
-            Rtem[ele]=Rtem[ele].replace("X,","")
-            Rtem[ele]=Rtem[ele].replace("x,","")
-            #Converción entre sistemas ángulares
-            if Rtem[ele].endswith("g"):
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/200
-            elif Rtem[ele].endswith("rad"):
-                pass
-            else:
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+    angR=calcop.split(" ")
+    for ele in range(len(angR)):
+        if angR[ele].startswith("X,",0,2) or angR[ele].startswith("x,",0,2):
+            angR[ele]=angR[ele].replace("X,","")
+            angR[ele]=angR[ele].replace("x,","")
+            #Converción a radianes:
+            angR[ele]=ascRad(angR[ele])
             
             #Esto es solo temporal y solo aplica para una sola rotación:
             #Matriz de rotación del eje X
             r11,r12,r13=1.0,0.0,0.0
             r21=0.0
             r31=0.0
-            r22,r23=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
-            r32,r33=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+            r22,r23=m.cos(float(angR[0])),-m.sin(float(angR[0]))
+            r32,r33=m.sin(float(angR[0])),m.cos(float(angR[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-        elif Rtem[ele].startswith("Y,",0,2) or Rtem[ele].startswith("y,",0,2):
-            Rtem[ele]=Rtem[ele].replace("Y,","")
-            Rtem[ele]=Rtem[ele].replace("y,","")
-            #Converción entre sistemas ángulares
-            if Rtem[ele].endswith("g"):
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/200
-            elif Rtem[ele].endswith("rad"):
-                pass
-            else:
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+        elif angR[ele].startswith("Y,",0,2) or angR[ele].startswith("y,",0,2):
+            angR[ele]=angR[ele].replace("Y,","")
+            angR[ele]=angR[ele].replace("y,","")
+            #Converción a radianes:
+            angR[ele]=ascRad(angR[ele])
             
             #Esto es solo temporal y solo aplica para una sola rotación:
             #Matriz de rotación del eje X
             r12=0.0
             r21,r22,r23=0.0,1.0,0.0
             r32=0.0
-            r11,r13=m.cos(float(Rtem[0])),m.sin(float(Rtem[0]))
-            r31,r33=-m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+            r11,r13=m.cos(float(angR[0])),m.sin(float(angR[0]))
+            r31,r33=-m.sin(float(angR[0])),m.cos(float(angR[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-        elif Rtem[ele].startswith("Z,",0,2) or Rtem[ele].startswith("z,",0,2):
-            Rtem[ele]=Rtem[ele].replace("Z,","")
-            Rtem[ele]=Rtem[ele].replace("z,","")
-            #Converción entre sistemas ángulares
-            if Rtem[ele].endswith("g"):
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/200
-            elif Rtem[ele].endswith("rad"):
-                pass
-            else:
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+        elif angR[ele].startswith("Z,",0,2) or angR[ele].startswith("z,",0,2):
+            angR[ele]=angR[ele].replace("Z,","")
+            angR[ele]=angR[ele].replace("z,","")
+            #Converción a radianes:
+            angR[ele]=ascRad(angR[ele])
             
             #Esto es solo temporal y solo aplica para una sola rotación:
             #Matriz de rotación del eje X
             r13=0.0
             r23=0.0
             r31=r32=r33=0.0,0.0,1.0
-            r11,r12=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
-            r21,r22=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+            r11,r12=m.cos(float(angR[0])),-m.sin(float(angR[0]))
+            r21,r22=m.sin(float(angR[0])),m.cos(float(angR[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
         else:
             print("\nError! Mal definido el eje de rotación.")
@@ -387,64 +326,49 @@ elif calcop.startswith("Rt ",0,3) or calcop.startswith("rt ",0,3) or calcop.star
     calcop=calcop.replace("rt ","")
     calcop=calcop.replace("rT ","")
     calcop=calcop.replace("RT ","")
-    Rtem=calcop.split(" ")
-    for ele in range(len(Rtem)):
-        if Rtem[ele].startswith("X,",0,2) or Rtem[ele].startswith("x,",0,2):
-            Rtem[ele]=Rtem[ele].replace("X,","")
-            Rtem[ele]=Rtem[ele].replace("x,","")
-            #Converción entre sistemas ángulares
-            if Rtem[ele].endswith("g"):
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/200
-            elif Rtem[ele].endswith("rad"):
-                pass
-            else:
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+    angR=calcop.split(" ")
+    for ele in range(len(angR)):
+        if angR[ele].startswith("X,",0,2) or angR[ele].startswith("x,",0,2):
+            angR[ele]=angR[ele].replace("X,","")
+            angR[ele]=angR[ele].replace("x,","")
+            #Converción a radianes:
+            angR[ele]=ascRad(angR[ele])
             
             #Esto es solo temporal y solo aplica para una sola rotación:
             #Matriz de rotación del eje X
             r11,r12,r13=1.0,0.0,0.0
             r21=0.0
             r31=0.0
-            r22,r23=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
-            r32,r33=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+            r22,r23=m.cos(float(angR[0])),-m.sin(float(angR[0]))
+            r32,r33=m.sin(float(angR[0])),m.cos(float(angR[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-        elif Rtem[ele].startswith("Y,",0,2) or Rtem[ele].startswith("y,",0,2):
-            Rtem[ele]=Rtem[ele].replace("Y, ","")
-            Rtem[ele]=Rtem[ele].replace("y, ","")
-            #Converción entre sistemas ángulares
-            if Rtem[ele].endswith("g"):
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/200
-            elif Rtem[ele].endswith("rad"):
-                pass
-            else:
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+        elif angR[ele].startswith("Y,",0,2) or angR[ele].startswith("y,",0,2):
+            angR[ele]=angR[ele].replace("Y, ","")
+            angR[ele]=angR[ele].replace("y, ","")
+            #Converción a radianes:
+            angR[ele]=ascRad(angR[ele])
             
             #Esto es solo temporal y solo aplica para una sola rotación:
             #Matriz de rotación del eje X
             r12=0.0
             r21,r22,r23=0.0,1.0,0.0
             r32=0.0
-            r11,r13=m.cos(float(Rtem[0])),m.sin(float(Rtem[0]))
-            r31,r33=-m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+            r11,r13=m.cos(float(angR[0])),m.sin(float(angR[0]))
+            r31,r33=-m.sin(float(angR[0])),m.cos(float(angR[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-        elif Rtem[ele].startswith("Z,",0,2) or Rtem[ele].startswith("z,",0,2):
-            Rtem[ele]=Rtem[ele].replace("Z, ","")
-            Rtem[ele]=Rtem[ele].replace("z, ","")
-            #Converción entre sistemas ángulares
-            if Rtem[ele].endswith("g"):
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/200
-            elif Rtem[ele].endswith("rad"):
-                pass
-            else:
-                Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+        elif angR[ele].startswith("Z,",0,2) or angR[ele].startswith("z,",0,2):
+            angR[ele]=angR[ele].replace("Z, ","")
+            angR[ele]=angR[ele].replace("z, ","")
+            #Converción a radianes:
+            angR[ele]=ascRad(angR[ele])
             
             #Esto es solo temporal y solo aplica para una sola rotación:
             #Matriz de rotación del eje X
             r13=0.0
             r23=0.0
             r31=r32=r33=0.0,0.0,1.0
-            r11,r12=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
-            r21,r22=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+            r11,r12=m.cos(float(angR[0])),-m.sin(float(angR[0]))
+            r21,r22=m.sin(float(angR[0])),m.cos(float(angR[0]))
             R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
         else:
             print("\nError! Mal definido el eje de rotación.")
@@ -494,64 +418,49 @@ elif calcop.startswith("Tr ",0,3) or calcop.startswith("tr ",0,3) or calcop.star
     if calcop.startswith("R ",0,2) or calcop.startswith("r ",0,2):
         calcop=calcop.replace("R ","")
         calcop=calcop.replace("r ","")
-        Rtem=calcop.split(" ")
-        for ele in range(len(Rtem)):
-            if Rtem[ele].startswith("X,",0,2) or Rtem[ele].startswith("x,",0,2):
-                Rtem[ele]=Rtem[ele].replace("X,","")
-                Rtem[ele]=Rtem[ele].replace("x,","")
-                #Converción entre sistemas ángulares
-                if Rtem[ele].endswith("g"):
-                    Rtem[ele]=(float(Rtem[ele])*m.pi)/200
-                elif Rtem[ele].endswith("rad"):
-                    pass
-                else:
-                    Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+        angR=calcop.split(" ")
+        for ele in range(len(angR)):
+            if angR[ele].startswith("X,",0,2) or angR[ele].startswith("x,",0,2):
+                angR[ele]=angR[ele].replace("X,","")
+                angR[ele]=angR[ele].replace("x,","")
+                #Converción a radianes:
+                angR[ele]=ascRad(angR[ele])
                 
                 #Esto es solo temporal y solo aplica para una sola rotación:
                 #Matriz de rotación del eje X
                 r11,r12,r13=1.0,0.0,0.0
                 r21=0.0
                 r31=0.0
-                r22,r23=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
-                r32,r33=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+                r22,r23=m.cos(float(angR[0])),-m.sin(float(angR[0]))
+                r32,r33=m.sin(float(angR[0])),m.cos(float(angR[0]))
                 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-            elif Rtem[ele].startswith("Y,",0,2) or Rtem[ele].startswith("y,",0,2):
-                Rtem[ele]=Rtem[ele].replace("Y, ","")
-                Rtem[ele]=Rtem[ele].replace("y, ","")
-                #Converción entre sistemas ángulares
-                if Rtem[ele].endswith("g"):
-                    Rtem[ele]=(float(Rtem[ele])*m.pi)/200
-                elif Rtem[ele].endswith("rad"):
-                    pass
-                else:
-                    Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+            elif angR[ele].startswith("Y,",0,2) or angR[ele].startswith("y,",0,2):
+                angR[ele]=angR[ele].replace("Y, ","")
+                angR[ele]=angR[ele].replace("y, ","")
+                #Converción a radianes:
+                angR[ele]=ascRad(angR[ele])
                 
                 #Esto es solo temporal y solo aplica para una sola rotación:
                 #Matriz de rotación del eje X
                 r12=0.0
                 r21,r22,r23=0.0,1.0,0.0
                 r32=0.0
-                r11,r13=m.cos(float(Rtem[0])),m.sin(float(Rtem[0]))
-                r31,r33=-m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+                r11,r13=m.cos(float(angR[0])),m.sin(float(angR[0]))
+                r31,r33=-m.sin(float(angR[0])),m.cos(float(angR[0]))
                 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
-            elif Rtem[ele].startswith("Z,",0,2) or Rtem[ele].startswith("z,",0,2):
-                Rtem[ele]=Rtem[ele].replace("Z, ","")
-                Rtem[ele]=Rtem[ele].replace("z, ","")
-                #Converción entre sistemas ángulares
-                if Rtem[ele].endswith("g"):
-                    Rtem[ele]=(float(Rtem[ele])*m.pi)/200
-                elif Rtem[ele].endswith("rad"):
-                    pass
-                else:
-                    Rtem[ele]=(float(Rtem[ele])*m.pi)/180
+            elif angR[ele].startswith("Z,",0,2) or angR[ele].startswith("z,",0,2):
+                angR[ele]=angR[ele].replace("Z, ","")
+                angR[ele]=angR[ele].replace("z, ","")
+                #Converción a radianes:
+                angR[ele]=ascRad(angR[ele])
                 
                 #Esto es solo temporal y solo aplica para una sola rotación:
                 #Matriz de rotación del eje X
                 r13=0.0
                 r23=0.0
                 r31=r32=r33=0.0,0.0,1.0
-                r11,r12=m.cos(float(Rtem[0])),-m.sin(float(Rtem[0]))
-                r21,r22=m.sin(float(Rtem[0])),m.cos(float(Rtem[0]))
+                r11,r12=m.cos(float(angR[0])),-m.sin(float(angR[0]))
+                r21,r22=m.sin(float(angR[0])),m.cos(float(angR[0]))
                 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
             else:
                 print("\nError! Mal definido el eje de rotación.")
