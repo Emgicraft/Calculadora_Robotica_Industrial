@@ -9,10 +9,10 @@ Para saber más sobre como se usa, puede leer las siguientes instrucciones, las 
 # **Calculadora para el curso de Robótica Industrial**
 ## Operaciones disponibles:
 (Ángulos sexagesimales por defecto, indicar otro con g o rad seguido y al final de cada ángulo.)
-    Conversión de coordenadas: (Respetar mayúsculas)
-        Cart o cart -> Cartesianas a Cilíndricas y Esféricas
-        Cil o cil -> Cilíndricas a Cartesianas y Esféricas
-        Esfer o esfer -> Esféricas a Cartesianas y Cilíndricas
+    * Conversión de coordenadas: (Respetar mayúsculas)
+        * Cart o cart -> Cartesianas a Cilíndricas y Esféricas
+        * Cil o cil -> Cilíndricas a Cartesianas y Esféricas
+      * Esfer o esfer -> Esféricas a Cartesianas y Cilíndricas
     Sistemas tridimensionales: (Al final ingresar vector relativo.)
         T o t -> Solo Traslación
         R o r -> Solo Rotación
