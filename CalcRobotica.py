@@ -344,8 +344,8 @@ while True:
                 r32,r33=m.sin(float(angR[0])),m.cos(float(angR[0]))
                 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
             elif angR[ele].startswith("Y,",0,2) or angR[ele].startswith("y,",0,2):
-                angR[ele]=angR[ele].replace("Y, ","")
-                angR[ele]=angR[ele].replace("y, ","")
+                angR[ele]=angR[ele].replace("Y,","")
+                angR[ele]=angR[ele].replace("y,","")
                 #Converción a radianes:
                 angR[ele]=ascRad(angR[ele])
                 
@@ -358,8 +358,8 @@ while True:
                 r31,r33=-m.sin(float(angR[0])),m.cos(float(angR[0]))
                 R=[[r11,r12,r13],[r21,r22,r23],[r31,r32,r33]]
             elif angR[ele].startswith("Z,",0,2) or angR[ele].startswith("z,",0,2):
-                angR[ele]=angR[ele].replace("Z, ","")
-                angR[ele]=angR[ele].replace("z, ","")
+                angR[ele]=angR[ele].replace("Z,","")
+                angR[ele]=angR[ele].replace("z,","")
                 #Converción a radianes:
                 angR[ele]=ascRad(angR[ele])
                 
